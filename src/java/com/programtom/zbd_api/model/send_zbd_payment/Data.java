@@ -13,5 +13,5 @@ public class Data {
     private UUID receiverID;
     private String amount;
     private String comment;
-    private OffsetDateTime settledAt;
+    private String settledAt;
 }

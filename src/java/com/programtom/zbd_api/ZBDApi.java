@@ -13,10 +13,14 @@ import java.lang.reflect.Type;
 
 public class ZBDApi {
 
+    public ChargeApi charge;
+    public PaymentApi payment;
+
     private ZBDApi() {
 
     }
 
+    static final Gson gson = new Gson();
     public static final String PRODUCTION = "https://api.zebedee.io/";
     public static final String SANDBOX = "https://sandbox-api.zebedee.io/";
 
@@ -25,9 +29,10 @@ public class ZBDApi {
     @SuppressWarnings("unused")
     private String apiKey;
 
+
     public Response<BtcUsdPrice> getBtcPrice() {
         try {
-            HttpResponse<String> response = Unirest.get("https://api.zebedee.io/v0/btcusd").asString();
+            HttpResponse<String> response = Unirest.get(hostBase + "v0/btcusd").asString();
             Type type = new TypeToken<Response<BtcUsdPrice>>() {
             }.getType();
 
@@ -64,6 +69,8 @@ public class ZBDApi {
                 zbdApi.hostBase = SANDBOX;
             }
             zbdApi.apiKey = apiKey;
+            zbdApi.charge = new ChargeApi(zbdApi.hostBase, zbdApi.apiKey);
+            zbdApi.payment = new PaymentApi(zbdApi.hostBase, zbdApi.apiKey);
             return zbdApi;
         }
     }
