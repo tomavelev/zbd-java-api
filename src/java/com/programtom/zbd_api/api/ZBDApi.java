@@ -1,4 +1,4 @@
-package com.programtom.zbd_api;
+package com.programtom.zbd_api.api;
 
 
 import com.google.gson.Gson;
@@ -15,6 +15,8 @@ public class ZBDApi {
 
     public ChargeApi charge;
     public PaymentApi payment;
+    public LightningAddressApi ln;
+    public ZbdGametagApi zbdGameTag;
 
     private ZBDApi() {
 
@@ -31,13 +33,16 @@ public class ZBDApi {
 
 
     public Response<BtcUsdPrice> getBtcPrice() {
+        return call(() -> Unirest.get(hostBase + "v0/btcusd").asString());
+    }
+
+    static <T> Response<T> call(ZBDCall<T> zbdCall) {
         try {
-            HttpResponse<String> response = Unirest.get(hostBase + "v0/btcusd").asString();
-            Type type = new TypeToken<Response<BtcUsdPrice>>() {
+            HttpResponse<String> logic = zbdCall.logic();
+            Type type = new TypeToken<Response<T>>() {
             }.getType();
 
-            return new Gson().fromJson(response.getBody(), type);
-
+            return ZBDApi.gson.fromJson(logic.getBody(), type);
         } catch (UnirestException e) {
             return new Response<>(e);
         }
@@ -71,6 +76,18 @@ public class ZBDApi {
             zbdApi.apiKey = apiKey;
             zbdApi.charge = new ChargeApi(zbdApi.hostBase, zbdApi.apiKey);
             zbdApi.payment = new PaymentApi(zbdApi.hostBase, zbdApi.apiKey);
+            zbdApi.ln = new LightningAddressApi(zbdApi.hostBase, zbdApi.apiKey);
+            zbdApi.zbdGameTag = new ZbdGametagApi(zbdApi.hostBase, zbdApi.apiKey);
+            //TODO email
+            //TODO withdraw
+            //TODO voucher
+            //TODO wallet
+            //TODO keysend
+            //TODO utility
+            //TODO static charge
+            //ZBD Login
+            //TODO Login & Authorization
+            //TODO User Data Fetching
             return zbdApi;
         }
     }
