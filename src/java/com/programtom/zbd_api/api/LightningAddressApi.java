@@ -8,21 +8,20 @@ import static com.programtom.zbd_api.api.ZBDApi.call;
 
 public class LightningAddressApi {
 
-    private final String hostBase;
 
-    private final String apiKey;
+    private final ZBDApi zbdApi;
 
-    LightningAddressApi(String hostBase, String apiKey) {
-        this.hostBase = hostBase;
-        this.apiKey = apiKey;
+    LightningAddressApi(ZBDApi zbdApi) {
+
+        this.zbdApi = zbdApi;
     }
 
     /**
      * <a href="https://zbd.dev/api-reference/lightning-address/validate">Validate Lightning Address</a>
      */
     public Response<ValidateLNResponse> validateLightningAddress(String address) {
-        return call(() -> Unirest.get(hostBase + "v0/ln-address/validate/" + address)
-                .header("apikey", apiKey)
+        return call(() -> Unirest.get(zbdApi.hostBase + "v0/ln-address/validate/" + address)
+                .header("apikey", zbdApi.apiKey)
                 .asString());
     }
 
@@ -31,8 +30,8 @@ public class LightningAddressApi {
      * <a href="https://zbd.dev/api-reference/lightning-address/create">Generate a payment request for a Lightning Address.</a>
      */
     public Response<CreateChargeResponse> createLNCharge(CreateChargeRequest request) {
-        return call(() -> Unirest.post(hostBase + "v0/ln-address/fetch-charge")
-                .header("apikey", apiKey)
+        return call(() -> Unirest.post(zbdApi.hostBase + "v0/ln-address/fetch-charge")
+                .header("apikey", zbdApi.apiKey)
                 .header("Content-Type", "application/json")
                 .body(ZBDApi.gson.toJson(request))
                 .asString());
@@ -43,8 +42,8 @@ public class LightningAddressApi {
      * <a href="https://zbd.dev/api-reference/lightning-address/create">Pay to Lightning Address</a>
      */
     public Response<PayToLightingResponse> payToLightning(PayToLightingRequest request) {
-        return call(() -> Unirest.post(hostBase + "v0/ln-address/send-payment")
-                .header("apikey", apiKey)
+        return call(() -> Unirest.post(zbdApi.hostBase + "v0/ln-address/send-payment")
+                .header("apikey", zbdApi.apiKey)
                 .header("Content-Type", "application/json")
                 .body(ZBDApi.gson.toJson(request))
                 .asString());

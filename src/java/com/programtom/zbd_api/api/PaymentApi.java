@@ -9,21 +9,19 @@ import static com.programtom.zbd_api.api.ZBDApi.call;
 
 public class PaymentApi {
 
-    private final String hostBase;
+    private final ZBDApi zbdApi;
 
-    private final String apiKey;
+    PaymentApi(ZBDApi zbdApi) {
 
-    PaymentApi(String hostBase, String apiKey) {
-        this.hostBase = hostBase;
-        this.apiKey = apiKey;
+        this.zbdApi = zbdApi;
     }
 
     /**
      * <a href="https://zbd.dev/api-reference/payments/send">Send Payment</a>
      */
     public Response<PaymentResponse> sendPayment(PaymentRequest request) {
-        return call(() -> Unirest.post(hostBase + "v0/payments")
-                .header("apikey", apiKey)
+        return call(() -> Unirest.post(zbdApi.hostBase + "v0/payments")
+                .header("apikey", zbdApi.apiKey)
                 .header("Content-Type", "application/json")
                 .body(ZBDApi.gson.toJson(request))
                 .asString());
@@ -33,8 +31,8 @@ public class PaymentApi {
      * <a href="https://zbd.dev/api-reference/payments/get">Get Payment</a>
      */
     public Response<PaymentResponse> getPayment(String id) {
-        return call(() -> Unirest.get(hostBase + "v0/payments/" + id)
-                .header("apikey", apiKey)
+        return call(() -> Unirest.get(zbdApi.hostBase + "v0/payments/" + id)
+                .header("apikey", zbdApi.apiKey)
                 .header("Content-Type", "application/json")
                 .asString());
     }

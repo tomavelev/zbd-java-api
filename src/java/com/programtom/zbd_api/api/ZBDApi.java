@@ -4,10 +4,8 @@ package com.programtom.zbd_api.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.programtom.zbd_api.model.Response;
-import com.programtom.zbd_api.model.btcprice.BtcUsdPrice;
 
 import java.lang.reflect.Type;
 
@@ -17,6 +15,15 @@ public class ZBDApi {
     public PaymentApi payment;
     public LightningAddressApi ln;
     public ZbdGametagApi zbdGameTag;
+    private UserDataFetchingApi userDataFetching;
+    private LoginAuthApi loginAuth;
+    private EmailApi email;
+    private WithdrawApi withdraw;
+    private VoucherApi voucher;
+    private KeysendApi keysend;
+    private WalletApi wallet;
+    private StaticChargeApi staticCharge;
+    private UtilityApi utility;
 
     private ZBDApi() {
 
@@ -27,14 +34,9 @@ public class ZBDApi {
     public static final String SANDBOX = "https://sandbox-api.zebedee.io/";
 
     @SuppressWarnings("unused")
-    private String hostBase;
+    String hostBase;
     @SuppressWarnings("unused")
-    private String apiKey;
-
-
-    public Response<BtcUsdPrice> getBtcPrice() {
-        return call(() -> Unirest.get(hostBase + "v0/btcusd").asString());
-    }
+    String apiKey;
 
     static <T> Response<T> call(ZBDCall<T> zbdCall) {
         try {
@@ -74,20 +76,19 @@ public class ZBDApi {
                 zbdApi.hostBase = SANDBOX;
             }
             zbdApi.apiKey = apiKey;
-            zbdApi.charge = new ChargeApi(zbdApi.hostBase, zbdApi.apiKey);
-            zbdApi.payment = new PaymentApi(zbdApi.hostBase, zbdApi.apiKey);
-            zbdApi.ln = new LightningAddressApi(zbdApi.hostBase, zbdApi.apiKey);
-            zbdApi.zbdGameTag = new ZbdGametagApi(zbdApi.hostBase, zbdApi.apiKey);
-            //TODO email
-            //TODO withdraw
-            //TODO voucher
-            //TODO wallet
-            //TODO keysend
-            //TODO utility
-            //TODO static charge
-            //ZBD Login
-            //TODO Login & Authorization
-            //TODO User Data Fetching
+            zbdApi.charge = new ChargeApi(zbdApi);
+            zbdApi.payment = new PaymentApi(zbdApi);
+            zbdApi.ln = new LightningAddressApi(zbdApi);
+            zbdApi.email = new EmailApi(zbdApi);
+            zbdApi.withdraw = new WithdrawApi(zbdApi);
+            zbdApi.voucher = new VoucherApi(zbdApi);
+            zbdApi.wallet = new WalletApi(zbdApi);
+            zbdApi.keysend = new KeysendApi(zbdApi);
+            zbdApi.utility = new UtilityApi(zbdApi);
+            zbdApi.staticCharge = new StaticChargeApi(zbdApi);
+            zbdApi.loginAuth = new LoginAuthApi(zbdApi);
+            zbdApi.userDataFetching = new UserDataFetchingApi(zbdApi);
+            zbdApi.zbdGameTag = new ZbdGametagApi(zbdApi);
             return zbdApi;
         }
     }
