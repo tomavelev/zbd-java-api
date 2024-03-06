@@ -15,15 +15,15 @@ public class ZBDApi {
     public PaymentApi payment;
     public LightningAddressApi ln;
     public ZbdGametagApi zbdGameTag;
-    private UserDataFetchingApi userDataFetching;
-    private LoginAuthApi loginAuth;
-    private EmailApi email;
-    private WithdrawApi withdraw;
-    private VoucherApi voucher;
-    private KeysendApi keysend;
-    private WalletApi wallet;
-    private StaticChargeApi staticCharge;
-    private UtilityApi utility;
+    public UserDataFetchingApi userDataFetching;
+    public LoginAuthApi loginAuth;
+    public EmailApi email;
+    public WithdrawApi withdraw;
+    public VoucherApi voucher;
+    public KeysendApi keysend;
+    public WalletApi wallet;
+    public StaticChargeApi staticCharge;
+    public UtilityApi utility;
 
     private ZBDApi() {
 

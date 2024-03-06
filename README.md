@@ -15,7 +15,7 @@ ZBDApi zbdApi = new ZBDApi.Builder()
    .setProduction(false)
    .setApiKey(apiKey)
    .build(); 
-Response<BtcUsdPrice> response = zbdApi.getBtcPrice();
+Response<BtcUsdPrice> response = zbdApi.utility.getBtcPrice();
 //        Response(success=true, 
                    data=BtcUsdPrice(btcUsdPrice=51471.095,
                    btcUsdTimestamp=1707939540), 
